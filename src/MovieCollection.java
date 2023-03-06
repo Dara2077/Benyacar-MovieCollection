@@ -65,7 +65,6 @@ public class MovieCollection
                 }
                 names = names.substring(index + 1);
             }
-            this.cast.add(names);
         }
         sortCastResults(cast);
     }
@@ -316,27 +315,62 @@ public class MovieCollection
 
     private void listGenres()
     {
+        for (int i = 0; i < genres.size(); i ++){
+            System.out.println(i + 1 + ". " + genres.get(i));
+        }
 
+        System.out.println("Which genre would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice = scanner.nextInt();
+        scanner.nextLine();
+        String pickedGenre = genres.get(choice - 1).toLowerCase();
+
+        ArrayList<Movie> moviesWithGenre = new ArrayList<Movie>();
+
+        //Find movies actor has been in
+        for (Movie movie : movies){
+            if (movie.getGenres().toLowerCase().contains(pickedGenre) && !(moviesWithGenre.contains(movie))){
+                moviesWithGenre.add(movie);
+            }
+        }
+
+        sortResults(moviesWithGenre);
+
+        for (int i = 0; i < moviesWithGenre.size(); i ++){
+            System.out.println(i + 1 + ". " + moviesWithGenre.get(i).getTitle());
+        }
+
+        System.out.println("Which movie would you like to learn more about?");
+        System.out.print("Enter number: ");
+
+        int choice1 = scanner.nextInt();
+        scanner.nextLine();
+
+        Movie selectedMovie = moviesWithGenre.get(choice1 - 1);
+
+        displayMovieInfo(selectedMovie);
+
+        System.out.println("\n ** Press Enter to Return to Main Menu **");
+        scanner.nextLine();
     }
 
     private void generateGenres(){
-//        this.genres = new ArrayList<String>();
-//        for (Movie movie : movies){
-//            String genres = movie.getGenres();
-//            int i = 0;
-//            while (genres.contains("|")){
-//                if (genres.substring(i, i + 1).equals("|")){
-//                    String genre = genres.substring(0, i);
-//                    if (!(this.cast.contains(genre.toLowerCase()))){
-//                        this.cast.add(genre.toLowerCase());
-//                    }
-//                    names = names.substring(i + 1);
-//                    i = 0;
-//                }
-//                i ++;
-//            }
-//            this.cast.add(names);
-//        }
+        this.genres = new ArrayList<String>();
+        for (Movie movie : movies){
+            String genreList = movie.getGenres();
+            while (genreList.contains("|")){
+                int index = genreList.indexOf("|");
+                String name = genreList.substring(0, index);
+                boolean contains = this.genres.contains(name);
+                if (!contains){
+                    this.genres.add(name);
+                }
+                genreList = genreList.substring(index + 1);
+            }
+        }
+        sortCastResults(genres);
+        System.out.println(genres);
     }
 
     private void listHighestRated()
