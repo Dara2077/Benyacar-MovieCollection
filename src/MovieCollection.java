@@ -370,7 +370,6 @@ public class MovieCollection
             }
         }
         sortCastResults(genres);
-        System.out.println(genres);
     }
 
     private void listHighestRated()
